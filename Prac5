@@ -1,0 +1,46 @@
+
+Steps
+1.samba & smbd
+sudo apt-get -y install samba
+sudo systemctl start smbd
+sudo systemctl status smbd
+2. nmbd
+sudo systemctl start nmbd
+sudo systemctl status nmbd
+3. make a samba_shared directory in /home/kali
+4. make few txt files in /home/kali/samba_shared 
+touch a.txt b.txt c.txt
+5. Now,
+cd /etc/samba
+ls /etc/samba
+6. make the backup of smb.conf 
+cp smb.conf smb.conf_bkp 
+7. few configuration in /etc/smb.conf
+   sudo nano smb.conf
+8. delete everything inside smb.conf and then write:
+    [samba_shared]
+	comment = Welcome to samba
+	path = /home/shibu/samba_shared
+	browseable = yes
+	read only = yes
+	guest ok = no
+9. download smbclient
+   sudo apt-get -y install smbclient
+10. start/stop services
+sudo systemctl start smbd
+sudo systemctl stop nmbd
+11. whoami
+12. sudo pdbedit -a -u $(whoami)
+13. sudo pdbedit -L (to check all users)
+14. make any connectionn possible
+    sudo ufw allow from (your ip addr) any app Samba
+   In my case it was
+    sudo ufw allow from 192.168.56.0/24 to any app Samba
+15. ip a 	(OR) 	ip addr
+16. reload firewall:
+sudo ufw reload  
+17. To check
+    sudo smbcllient -U <username> -L  //your ip
+18. restart services
+sudo systemctl restart smbd
+sudo systemctl restart nmbd
